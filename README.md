@@ -1,43 +1,44 @@
 # Packet Pulse: Firewall Shift
 
-**Game Development — EdVyro, Milestone 2: Game Design Document and Playable Prototype**  
+**EdVyro — Game Development Milestone 2: Game Design Document and Playable Prototype**  
 **Creator:** Sudharshan P S  
-**Technology:** HTML, CSS, vanilla JavaScript (no packages, accounts, servers, or third-party assets)
+**Built with:** HTML, CSS, vanilla JavaScript — no packages or backend needed
 
 ## Play the game
 
-**Live playable link:** _Add your GitHub Pages link here after publishing._
-
-You can also download/open `index.html` in any modern browser. On GitHub Pages it runs immediately with no setup.
-
-![Packet Pulse playable game screenshot](preview-gameplay.png)
+- **[Open the playable source (`index.html`)](index.html)** — download or run on GitHub Pages after enabling it
+- **GitHub Pages URL:** https://sudharshanps.github.io/EdVyro-Game-Development-Milestone-2/ (works once GitHub Pages is enabled under Settings → Pages)
+- **[Download the complete repository as a ZIP](https://github.com/sudharshanps/EdVyro-Game-Development-Milestone-2/archive/refs/heads/main.zip)**
 
 ## The game
 
-In a fictional network gateway, incoming packets are either **SAFE** or **THREAT**. The player performs exactly one kind of action: switch the gateway mode. Set **ALLOW** for SAFE packets and **BLOCK** for THREAT packets before they reach the dashed gateway line. Every correct response earns 10 points. Every wrong response costs one life. Survive for 180 seconds with at least 30 correct packets and one life remaining to win.
+In a fictional gateway, packets are either **SAFE** or **THREAT**. Switch the firewall to **ALLOW** safe packets and **BLOCK** threat packets before they reach the gateway line. Earn 10 points for correct matches; lose one life for incorrect matches. Survive 180 seconds, achieve at least 30 correct matches, and keep a life to win.
 
-**Controls:** Space = switch mode; tap game arena or "Switch firewall mode" = switch mode; P = pause/resume; R = restart; on-screen Pause and Restart buttons are provided.
+**Controls:** Space = change mode; tap the arena or Switch Firewall Mode button to change mode; P = pause/resume; R = restart.
 
-## Files
+## EdVyro submission checklist
 
-- `index.html` — self-contained playable browser game (source code and prototype)
-- `GDD.pdf` / `GDD.md` — one-page game design document
-- `screen-sketch.png` — screen layout and feedback-state sketch
-- `PLAYTEST.md` — testing template and manual functional checklist
-- `CHECKLIST.md` — EdVyro submission checklist
-- `preview-gameplay.png` / `preview-mobile.png` — desktop and mobile screenshots
+| Requirement | File |
+| --- | --- |
+| Original playable browser prototype and source code | [index.html](index.html) |
+| One-page Game Design Document | [GDD.md](GDD.md) |
+| Main-screen wireframe and feedback states | [SCREEN-SKETCH.md](SCREEN-SKETCH.md) |
+| Testing and playtest notes | [PLAYTEST.md](PLAYTEST.md) |
+| Completion checklist | [CHECKLIST.md](CHECKLIST.md) |
+| Downloadable source ZIP | [GitHub-generated repository archive](https://github.com/sudharshanps/EdVyro-Game-Development-Milestone-2/archive/refs/heads/main.zip) |
 
-## Publish — one public proof link
+## Publish the live game on GitHub Pages
 
-1. Create a **public** GitHub repository named `packet-pulse-game`.
-2. Upload the contents of this folder, including `index.html`, `README.md`, `GDD.pdf`, and `screen-sketch.png`.
-3. In repository **Settings → Pages**, set **Deploy from a branch → main → /(root)** and save.
-4. Once deployed, open `https://YOUR-USERNAME.github.io/packet-pulse-game/` and test the game.
-5. Edit the "Live playable link" line above to show your actual deployed URL.
-6. Paste your **public GitHub repository URL** into EdVyro's **Project URL** field. The repository contains the design document, prototype source, screen sketch, and a link to the playable version.
+1. Open this repository's **Settings → Pages**.
+2. Under **Build and deployment**, select **Deploy from a branch**.
+3. Set branch to **main**, folder to **/(root)**, then click **Save**.
+4. After GitHub deploys the website, open the GitHub Pages URL shown above.
+5. Submit **this public GitHub repository URL** in EdVyro's Project URL field.
 
-> Publishing is not done automatically by downloading these files. You must upload the project before you can submit a public URL.
+## Optional additional artifacts
 
-## Scope
+A printable GDD PDF and PNG screenshots were also prepared separately in the ChatGPT project package. The GitHub connector uploaded the source/documentation files; binary PDF/PNG artifacts are not included in this repository version. The Markdown GDD and screen sketch here contain the corresponding deliverable content.
 
-This is intentionally a small, original prototype with CSS placeholder artwork. No accounts, real networking, tracking, purchased assets, or backend are involved. The packet types are fictional labels for gameplay, not an actual network-security classifier.
+## Project scope
+
+This is a small, original game prototype using CSS placeholder graphics. It does not inspect actual network packets, store personal data, or require accounts.
