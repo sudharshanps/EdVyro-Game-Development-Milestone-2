@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071327">
+<meta name="description" content="Packet Pulse: Firewall Shift - a free, original one-button browser game.">
+<title>Packet Pulse | Firewall Shift</title>
+<style>
+:root{color-scheme:dark;--bg:#071327;--panel:#0e1e36;--line:#203653;--text:#eff7ff;--muted:#9bb0c6;--cyan:#4ae7d4;--amber:#ffbb64;--red:#ff6b7a}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text)}body{background:radial-gradient(ellipse at 50% -20%,#163b61 0,transparent 55%),#071327}
+button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible,.playfield:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.page{max-width:1110px;margin:0 auto;padding:24px 22px 48px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:25px}.brand{display:flex;gap:11px;align-items:center;font-size:13px;font-weight:800;letter-spacing:.15em}.brand-icon{width:38px;height:38px;border:1px solid #3a7991;border-radius:12px;display:grid;place-items:center;color:var(--cyan);background:#102840;font-size:22px}.eyebrow{color:var(--cyan);font-weight:800;letter-spacing:.16em;text-transform:uppercase;font-size:11px}.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:.24em;margin-top:3px}.quiet-pill{border:1px solid #2a4a69;color:#9cbad2;border-radius:30px;padding:9px 13px;font-size:11px;font-weight:700}
+.hero{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:24px}.hero h1{font-size:clamp(30px,5vw,52px);letter-spacing:-.055em;line-height:1.02;margin:7px 0 8px}.hero h1 span{color:var(--cyan)}.hero p{color:var(--muted);font-size:14px;margin:0;line-height:1.5}.difficulty{font-size:12px;color:#c0cddd;border:1px solid #2a425e;border-radius:10px;padding:11px 13px;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px}.stat{background:linear-gradient(180deg,#132541,#0c1a2e);border:1px solid #213a57;border-radius:15px;padding:14px 17px;min-height:90px}.stat .label{display:block;color:#91a9bf;font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;margin-bottom:9px}.stat .value{display:block;font-size:26px;font-weight:800;letter-spacing:-.05em}.stat .value.cyan{color:var(--cyan)}.stat .value.amber{color:var(--amber)}.lives{letter-spacing:4px!important;color:#ff8091}.stat .value.small{font-size:17px;letter-spacing:0!important;padding-top:4px}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px}.game-card{align-self:start;padding:12px;border-radius:22px;background:#101f35;border:1px solid #23425b;min-width:0}.playfield{position:relative;height:480px;overflow:hidden;border-radius:14px;border:1px solid #2a4663;background:radial-gradient(ellipse at 50% 30%,#113856 0%,#0a1d36 48%,#081427 100%);isolation:isolate;touch-action:manipulation;cursor:pointer}
+.playfield::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.65;background-image:linear-gradient(#2d779025 1px,transparent 1px),linear-gradient(90deg,#2d779025 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(transparent,#000 30%,#000 100%)}
+.playfield::after{content:"";position:absolute;z-index:-1;width:58%;height:140%;left:21%;top:-15%;background:linear-gradient(90deg,transparent,#4ae7d408,transparent);border-left:1px dashed #4ae7d42c;border-right:1px dashed #4ae7d42c}
+.play-top{display:flex;justify-content:space-between;gap:10px;position:absolute;top:20px;left:22px;right:22px;z-index:2;color:#aac5d7;font-size:10px;font-weight:800;letter-spacing:.12em}.play-top b{color:var(--cyan)}.beam{position:absolute;left:25%;width:50%;bottom:96px;border-top:2px dashed #8bd4eb78;box-shadow:0 0 20px #1cc6dc30}.target{position:absolute;width:210px;max-width:70%;left:50%;bottom:29px;transform:translateX(-50%);height:55px;border:2px solid var(--cyan);border-radius:13px;background:#123e51;box-shadow:0 0 30px #4ae7d426;display:flex;justify-content:center;align-items:center;gap:11px;color:#b5fff4;font-size:13px;font-weight:900;letter-spacing:.11em;transition:background .18s,border .18s,box-shadow .18s,color .18s}.target.block{border-color:var(--amber);background:#583925;box-shadow:0 0 30px #ffbb6433;color:#ffe2b7}.target .symbol{font-size:23px}.packet{position:absolute;width:150px;left:50%;top:0;transform:translate(-50%,-100%);display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:15px;border:2px solid currentColor;font-size:12px;font-weight:900;letter-spacing:.08em;box-shadow:0 0 34px currentColor;background:#112d39;color:var(--cyan)}.packet.threat{background:#382b29;color:var(--amber)}.packet .symbol{font-size:21px}.incoming{position:absolute;top:81px;left:50%;transform:translateX(-50%);color:#93a8bb;font-size:11px;letter-spacing:.12em;text-transform:uppercase}.feedback{position:absolute;top:56%;left:50%;transform:translate(-50%,-50%);font-size:18px;font-weight:900;letter-spacing:.02em;text-shadow:0 2px 18px #000;pointer-events:none;z-index:3;opacity:0;transition:opacity .16s}.feedback.visible{opacity:1}.feedback.good{color:var(--cyan)}.feedback.bad{color:var(--red)}
+.overlay{position:absolute;inset:0;background:#07162be8;z-index:5;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;backdrop-filter:blur(5px)}.overlay[hidden]{display:none}.overlay-inner{max-width:420px}.orb{width:72px;height:72px;border-radius:22px;background:linear-gradient(150deg,#1f6172,#123c50);border:1px solid #51aeaa;margin:0 auto 17px;display:grid;place-items:center;font-size:37px;color:var(--cyan);box-shadow:0 0 42px #39d9ce30}.overlay h2{font-size:clamp(25px,5vw,36px);margin:0 0 12px;letter-spacing:-.05em}.overlay p{color:#bad0df;font-size:14px;line-height:1.7;margin:0 0 17px}.over-rules{border:1px solid #2c4d62;background:#0d263b;border-radius:12px;padding:12px;margin-bottom:20px;line-height:1.7;font-size:13px}.over-rules .safe{color:var(--cyan)}.over-rules .risk{color:var(--amber)}.primary{padding:13px 23px;border:0;border-radius:12px;background:var(--cyan);color:#09262a;font-weight:900;box-shadow:0 6px 28px #4ae7d435}.primary:hover{background:#80ffed}
+.side{display:flex;flex-direction:column;gap:13px}.panel{background:#101f35;border:1px solid #25435b;border-radius:18px;padding:21px}.panel h2{margin:0 0 13px;font-size:15px;letter-spacing:-.02em}.panel p{font-size:12px;color:#afc1d2;line-height:1.65;margin:0 0 12px}.rules{display:grid;gap:11px;margin:15px 0}.rule{display:flex;align-items:center;gap:10px;color:#d4dfeb;font-size:12px}.dot{height:30px;width:30px;display:grid;place-items:center;border-radius:9px;font-size:15px;background:#134e4d;color:var(--cyan)}.dot.risk{background:#5c3928;color:var(--amber)}.action{width:100%;padding:15px;border:1px solid #50ceb8;border-radius:13px;background:linear-gradient(110deg,#0f4f55,#12545b);color:#e8ffff;text-transform:uppercase;font-size:13px;font-weight:900;letter-spacing:.04em;margin-top:6px}.action:hover{background:#126d73}.control-hint{color:#a9bfcd!important;font-size:11px!important;text-align:center;margin:10px 0 0!important}.kbd{display:inline-block;border:1px solid #4e6b82;background:#10273e;padding:2px 6px;border-radius:5px;color:#effaff;font-size:10px}.secondary{width:100%;background:transparent;border:1px solid #395875;border-radius:10px;color:#bed2e6;padding:9px 10px;font-weight:700;font-size:12px;margin-top:10px}.secondary:hover{background:#1a3450}.secondary:disabled{opacity:.45;cursor:not-allowed}
+.footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px;color:#7994aa;font-size:11px}.footer strong{color:#b2d4e4}
+@media(max-width:830px){.main{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr}.playfield{height:450px}}@media(max-width:580px){.page{padding:14px 12px 30px}.hero{align-items:start}.hero h1{font-size:34px}.difficulty{display:none}.quiet-pill{font-size:10px}.stats{grid-template-columns:repeat(2,1fr)}.stat{min-height:79px;padding:12px}.stat .value{font-size:22px}.side{display:flex}.playfield{height:410px}.play-top{left:13px;right:13px;font-size:9px}.target{bottom:22px}.beam{bottom:88px}.packet{width:142px}.game-card{padding:8px}.footer{line-height:1.7}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top"><div class="brand"><div class="brand-icon">⬡</div><div>PACKET PULSE<small>FIREWALL SHIFT</small></div></div><div class="quiet-pill">ORIGINAL WEB GAME · V1.0</div></header>
+  <section class="hero"><div><div class="eyebrow">A one-button cyber arcade challenge</div><h1>Secure the <span>network.</span></h1><p>One switch. Two modes. Can you protect the gateway for 3 minutes?</p></div><div class="difficulty">● BEGINNER FRIENDLY</div></section>
+  <section class="stats" aria-label="Game statistics">
+    <div class="stat"><span class="label">Time remaining</span><output id="time" class="value">03:00</output></div>
+    <div class="stat"><span class="label">Correct packets</span><output id="hits" class="value cyan">0 / 30</output></div>
+    <div class="stat"><span class="label">Lives remaining</span><output id="lives" class="value lives" aria-label="6 lives">♥ ♥ ♥ ♥ ♥ ♥</output></div>
+    <div class="stat"><span class="label">Current mode</span><output id="mode" class="value small cyan">ALLOW</output></div>
+  </section>
+  <main class="main">
+    <section class="game-card" aria-label="Playable game">
+      <div class="playfield" id="field" tabindex="0" aria-label="Game arena. Press Space or tap to switch firewall mode.">
+        <div class="play-top"><span>INBOUND TRAFFIC / PORT 443</span><span id="flowStatus">● <b>READY</b></span></div>
+        <div class="incoming">Incoming packet</div><div class="beam"></div><div id="packetContainer"></div>
+        <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+        <div id="target" class="target"><span class="symbol">✓</span><span id="gateLabel">ALLOW SAFE</span></div>
+        <div id="overlay" class="overlay"><div class="overlay-inner"><div class="orb" id="overlayIcon">⬡</div><h2 id="overlayTitle">Firewall Shift</h2><p id="overlayText">Protect the gateway by matching your firewall mode to each incoming packet.</p><div class="over-rules" id="overlayRules"><span class="safe">● SAFE</span> → ALLOW &nbsp;&nbsp; <span class="risk">◆ THREAT</span> → BLOCK<br>Switch with <strong>Space</strong> or tap. Get <strong>30 correct</strong> and survive <strong>3 minutes</strong>.</div><button class="primary" id="startButton">Start mission →</button></div></div>
+      </div>
+    </section>
+    <aside class="side">
+      <section class="panel"><div class="eyebrow">How to play</div><h2 style="margin-top:8px">Match the packet</h2><p>Each labeled packet travels toward the gateway. Use a single action to switch between ALLOW and BLOCK before it reaches the dashed line.</p><div class="rules"><div class="rule"><span class="dot">✓</span><span><b>SAFE packet</b> → use ALLOW</span></div><div class="rule"><span class="dot risk">✕</span><span><b>THREAT packet</b> → use BLOCK</span></div></div><button id="toggleButton" class="action" aria-label="Toggle firewall mode" disabled>↻ Switch firewall mode</button><p class="control-hint">Press <span class="kbd">SPACE</span> or tap the game area</p></section>
+      <section class="panel"><div class="eyebrow">Mission control</div><h2 style="margin-top:8px">Keep the gateway online</h2><p>Correct match: +10 points. Wrong match: lose one life. Reach at least 30 correct matches, with a life remaining when the clock reaches zero, to win.</p><p id="scoreText"><strong style="color:#e8ffff">Score: 0</strong> · Streak: 0</p><button class="secondary" id="pauseButton" disabled>Pause game (P)</button><button class="secondary" id="restartButton" disabled>Restart mission (R)</button></section>
+    </aside>
+  </main>
+  <footer class="footer"><span>Original design & code · <strong>Sudharshan P S</strong> · EdVyro Game Development Milestone 2</span><span>No downloads · No libraries · Keyboard & touch</span></footer>
+</div>
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const ui = {field:$('field'),time:$('time'),hits:$('hits'),lives:$('lives'),mode:$('mode'),flow:$('flowStatus'),container:$('packetContainer'),feedback:$('feedback'),target:$('target'),gateLabel:$('gateLabel'),overlay:$('overlay'),overlayTitle:$('overlayTitle'),overlayText:$('overlayText'),overlayIcon:$('overlayIcon'),overlayRules:$('overlayRules'),start:$('startButton'),toggle:$('toggleButton'),pause:$('pauseButton'),restart:$('restartButton'),score:$('scoreText')};
+  const GAME_SECONDS = 180, TARGET_MATCHES = 30, MAX_LIVES = 6;
+  const state = {phase:'intro',time:GAME_SECONDS,hits:0,misses:0,lives:MAX_LIVES,score:0,streak:0,mode:'ALLOW',packet:null,nextSpawn:0.7,feedbackTimer:0,lastFrame:0,lastUi:0,lastKind:null,repeat:0};
+  function clearPacket(){if(state.packet?.node)state.packet.node.remove();state.packet=null;}
+  function updateUI(){
+    const s=Math.ceil(Math.max(0,state.time));ui.time.textContent=`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+    ui.hits.textContent=`${state.hits} / ${TARGET_MATCHES}`;ui.lives.textContent='♥ '.repeat(state.lives).trim()||'—';ui.lives.setAttribute('aria-label',`${state.lives} lives`);
+    ui.mode.textContent=state.mode;ui.mode.style.color=state.mode==='ALLOW'?'var(--cyan)':'var(--amber)';ui.target.classList.toggle('block',state.mode==='BLOCK');ui.target.querySelector('.symbol').textContent=state.mode==='ALLOW'?'✓':'✕';ui.gateLabel.textContent=state.mode==='ALLOW'?'ALLOW SAFE':'BLOCK THREAT';
+    ui.score.innerHTML=`<strong style="color:#e8ffff">Score: ${state.score}</strong> · Streak: ${state.streak}`;
+    ui.toggle.disabled=state.phase!=='playing';ui.pause.disabled=!['playing','paused'].includes(state.phase);ui.restart.disabled=state.phase==='intro';ui.pause.textContent=state.phase==='paused'?'Resume game (P)':'Pause game (P)';
+    ui.flow.innerHTML=state.phase==='playing'?'● <b>LIVE</b>':state.phase==='paused'?'● PAUSED':state.phase==='intro'?'● READY':'● ENDED';
+  }
+  function showOverlay(title,text,button,icon,rules=''){
+    ui.overlay.hidden=false;ui.overlayTitle.textContent=title;ui.overlayText.textContent=text;ui.start.textContent=button;ui.overlayIcon.textContent=icon;
+    ui.overlayRules.hidden=!rules;ui.overlayRules.textContent=rules;
+  }
+  function hideOverlay(){ui.overlay.hidden=true;}
+  function reset(){clearPacket();Object.assign(state,{phase:'playing',time:GAME_SECONDS,hits:0,misses:0,lives:MAX_LIVES,score:0,streak:0,mode:'ALLOW',nextSpawn:.65,feedbackTimer:0,lastKind:null,repeat:0});ui.feedback.className='feedback';hideOverlay();updateUI();ui.field.focus({preventScroll:true});}
+  function start(){if(state.phase==='paused'){resume();return;}reset();}
+  function toggle(){if(state.phase!=='playing')return;state.mode=state.mode==='ALLOW'?'BLOCK':'ALLOW';updateUI();}
+  function pause(){if(state.phase!=='playing')return;state.phase='paused';showOverlay('Mission paused','Your packet stream is frozen. Continue when ready.','Resume mission →','Ⅱ','Press P to continue, or use the Resume button.');updateUI();}
+  function resume(){if(state.phase!=='paused')return;state.phase='playing';state.lastFrame=performance.now();hideOverlay();updateUI();ui.field.focus({preventScroll:true});}
+  function finish(won,reason){state.phase=won?'won':'lost';clearPacket();showOverlay(won?'Network secured!':'Mission ended',`${reason} Correct: ${state.hits} · Score: ${state.score}.`,'Play again →',won?'★':'!');updateUI();}
+  function spawn(){
+    let type=Math.random()<.5?'SAFE':'THREAT';if(type===state.lastKind){state.repeat++;if(state.repeat>=3){type=type==='SAFE'?'THREAT':'SAFE';state.repeat=0;}}else{state.repeat=0;}state.lastKind=type;
+    const node=document.createElement('div');node.className='packet'+(type==='THREAT'?' threat':'');node.innerHTML=`<span class="symbol" aria-hidden="true">${type==='SAFE'?'✓':'✕'}</span><span>${type}</span>`;
+    ui.container.appendChild(node);state.packet={type,node,y:-45,speed:205};
+  }
+  function announce(correct,type){ui.feedback.textContent=correct?`+10 · ${type} handled`:`−1 life · ${type} mishandled`;ui.feedback.className='feedback visible '+(correct?'good':'bad');state.feedbackTimer=1.0;}
+  function resolvePacket(){
+    const {type}=state.packet,correct=state.mode===(type==='SAFE'?'ALLOW':'BLOCK');
+    if(correct){state.hits++;state.streak++;state.score+=10;}
+    else{state.misses++;state.streak=0;state.lives--;}
+    announce(correct,type);clearPacket();state.nextSpawn=.6;updateUI();
+    if(state.lives<=0)finish(false,'The gateway ran out of lives.');
+  }
+  function frame(now){
+    const dt=Math.min((now-(state.lastFrame||now))/1000,.08);state.lastFrame=now;
+    if(state.phase==='playing'){
+      state.time-=dt;
+      if(state.feedbackTimer>0){state.feedbackTimer-=dt;if(state.feedbackTimer<=0)ui.feedback.classList.remove('visible');}
+      if(state.time<=0){state.time=0;finish(state.hits>=TARGET_MATCHES,state.hits>=TARGET_MATCHES?'You protected the gateway for all 3 minutes.':'You survived, but did not reach 30 correct packets.');}
+      else if(state.packet){
+        state.packet.y+=state.packet.speed*dt;
+        state.packet.node.style.transform=`translate(-50%, ${state.packet.y}px)`;
+        const gateY=ui.field.clientHeight-118;
+        if(state.packet.y>=gateY)resolvePacket();
+      }else{state.nextSpawn-=dt;if(state.nextSpawn<=0)spawn();}
+      if(now-state.lastUi>120){updateUI();state.lastUi=now;}
+    }
+    requestAnimationFrame(frame);
+  }
+  ui.start.addEventListener('click',start);
+  ui.toggle.addEventListener('click',toggle);
+  ui.pause.addEventListener('click',()=>state.phase==='paused'?resume():pause());
+  ui.restart.addEventListener('click',reset);
+  ui.field.addEventListener('click',e=>{if(e.target.closest('button'))return;toggle();});
+  document.addEventListener('keydown',e=>{
+    const isTyping=['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName);
+    if(isTyping)return;
+    if(e.code==='Space'){e.preventDefault();if(document.activeElement?.tagName==='BUTTON')return;toggle();}
+    else if(e.key.toLowerCase()==='p'){e.preventDefault();state.phase==='playing'?pause():resume();}
+    else if(e.key.toLowerCase()==='r'&&state.phase!=='intro'){e.preventDefault();reset();}
+  });
+  updateUI();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
